@@ -1,10 +1,16 @@
 package com.neocaptainnemo.calculator23rdjune.ui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.neocaptainnemo.calculator23rdjune.R;
 import com.neocaptainnemo.calculator23rdjune.model.CalculatorImpl;
@@ -22,11 +28,35 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences preferences = getSharedPreferences("themes.xml", Context.MODE_PRIVATE);
+
+        int theme = preferences.getInt("theme", R.style.Theme_Calculator23rdJune);
+
+        setTheme(theme);
+
         setContentView(R.layout.activity_calculator);
 
         resultTxt = findViewById(R.id.result);
 
         presenter = new CalculatorPresenter(this, new CalculatorImpl());
+
+        String keyOne = getResources().getString(R.string.key_1);
+        String keyOneShort = getString(R.string.key_1);
+
+        float dimenOne = getResources().getDimension(R.dimen.default_padding);
+
+        int color = ContextCompat.getColor(this, R.color.btn_color);
+
+        View layout = getLayoutInflater().inflate(R.layout.activity_calculator, null);
+
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.rectangle);
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+        }
+
+        resultTxt.setBackground(drawable);
 
         Map<Integer, Integer> digits = new HashMap<>();
         digits.put(R.id.key_1, 1);
@@ -84,6 +114,53 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
                 presenter.onDotPressed();
             }
         });
+
+        Button themeOne = findViewById(R.id.theme1);
+        Button themeTwo = findViewById(R.id.theme2);
+        Button themeThree = findViewById(R.id.theme3);
+
+        if (themeOne != null) {
+            themeOne.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    preferences.edit()
+                            .putInt("theme", R.style.Theme_Calculator23rdJune)
+                            .commit();
+
+                    recreate();
+                }
+            });
+        }
+
+        if (themeTwo != null) {
+            themeTwo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    preferences.edit()
+                            .putInt("theme", R.style.Theme_Calculator23rdJune_V2)
+                            .commit();
+
+                    recreate();
+
+                }
+            });
+        }
+
+        if (themeThree != null) {
+            themeThree.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    preferences.edit()
+                            .putInt("theme", R.style.Theme_Calculator23rdJune_V3)
+                            .commit();
+
+                    recreate();
+
+                }
+            });
+        }
+
     }
 
     @Override

@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Калькуль</string>
+    <string name="key_1">Адын</string>
+    <string name="key_zero">Нуль</string>
+    <string name="key_2">Дива</string>
+    <string name="key_3">Три</string>
+    <string name="key_plus">Плюс</string>
+    <string name="key_4">Четыре</string>
+    <string name="key_5">Пять</string>
+    <string name="key_6">Шешть</string>
+    <string name="key_minus">Минус</string>
+    <string name="key_7">Семъ</string>
+    <string name="key_8">Восемъ</string>
+    <string name="key_9">Девять</string>
+    <string name="key_mult">Умножить</string>
+    <string name="key_dot">запятая</string>
+    <string name="key_div">Делить</string>
+</resources>

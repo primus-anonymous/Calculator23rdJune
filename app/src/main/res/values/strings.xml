@@ -15,4 +15,7 @@
     <string name="key_mult">*</string>
     <string name="key_dot">.</string>
     <string name="key_div">/</string>
+    <string name="theme_1">Theme 1</string>
+    <string name="theme_2">Theme 2</string>
+    <string name="theme_3">Theme 3</string>
 </resources>

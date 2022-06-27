@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_calculator.xml" value="0.30885416666666665" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2235" />
+        <entry key="app/src/main/res/drawable/rectangle.xml" value="0.2235" />
+        <entry key="app/src/main/res/layout-land/activity_calculator.xml" value="0.25" />
+        <entry key="app/src/main/res/layout-sw600dp/activity_calculator.xml" value="0.6103515625" />
+        <entry key="app/src/main/res/layout/activity_calculator.xml" value="0.335" />
       </map>
     </option>
   </component>
