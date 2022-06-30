@@ -1,20 +1,26 @@
 package com.neocaptainnemo.calculator23rdjune.ui;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.neocaptainnemo.calculator23rdjune.R;
 import com.neocaptainnemo.calculator23rdjune.model.CalculatorImpl;
 import com.neocaptainnemo.calculator23rdjune.model.Operator;
+import com.neocaptainnemo.calculator23rdjune.model.Theme;
+import com.neocaptainnemo.calculator23rdjune.model.ThemeRepository;
+import com.neocaptainnemo.calculator23rdjune.model.ThemeRepositoryImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,19 +31,23 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
 
     private CalculatorPresenter presenter;
 
+    private ThemeRepository themeRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences preferences = getSharedPreferences("themes.xml", Context.MODE_PRIVATE);
+        themeRepository = ThemeRepositoryImpl.getInstance(this);
 
-        int theme = preferences.getInt("theme", R.style.Theme_Calculator23rdJune);
-
-        setTheme(theme);
+        setTheme(themeRepository.getSavedTheme().getThemeRes());
 
         setContentView(R.layout.activity_calculator);
 
         resultTxt = findViewById(R.id.result);
+
+        if (getIntent().hasExtra("message")) {
+            resultTxt.setText(getIntent().getStringExtra("message"));
+        }
 
         presenter = new CalculatorPresenter(this, new CalculatorImpl());
 
@@ -115,52 +125,28 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
             }
         });
 
-        Button themeOne = findViewById(R.id.theme1);
-        Button themeTwo = findViewById(R.id.theme2);
-        Button themeThree = findViewById(R.id.theme3);
+        ActivityResultLauncher<Intent> themeLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent intent = result.getData();
 
-        if (themeOne != null) {
-            themeOne.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                Theme selectedTheme = (Theme) intent.getSerializableExtra(SelectThemeActivity.EXTRA_THEME);
 
-                    preferences.edit()
-                            .putInt("theme", R.style.Theme_Calculator23rdJune)
-                            .commit();
+                themeRepository.saveTheme(selectedTheme);
 
-                    recreate();
-                }
-            });
-        }
+                recreate();
+            }
 
-        if (themeTwo != null) {
-            themeTwo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    preferences.edit()
-                            .putInt("theme", R.style.Theme_Calculator23rdJune_V2)
-                            .commit();
+        });
 
-                    recreate();
+        findViewById(R.id.theme).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CalculatorActivity.this, SelectThemeActivity.class);
+                intent.putExtra(SelectThemeActivity.EXTRA_THEME, themeRepository.getSavedTheme());
 
-                }
-            });
-        }
-
-        if (themeThree != null) {
-            themeThree.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    preferences.edit()
-                            .putInt("theme", R.style.Theme_Calculator23rdJune_V3)
-                            .commit();
-
-                    recreate();
-
-                }
-            });
-        }
-
+                themeLauncher.launch(intent);
+            }
+        });
     }
 
     @Override

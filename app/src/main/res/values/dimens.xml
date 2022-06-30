@@ -3,4 +3,5 @@
     <dimen name="result_size">24sp</dimen>
     <dimen name="default_padding">16dp</dimen>
     <dimen name="btn_calc_text_size">24sp</dimen>
+    <dimen name="small_padding">4dp</dimen>
 </resources>
